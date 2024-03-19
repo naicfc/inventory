@@ -1,14 +1,16 @@
-import './assets/main.css'
+import "./assets/main.css";
 
-import { createApp } from 'vue'
-import { createPinia } from 'pinia'
+import { createApp } from "vue";
+import { createPinia } from "pinia";
+import App from "./App.vue";
+import router from "./router";
+import piniaPluginPersistedstate from "pinia-plugin-persistedstate";
+import velocity from "velocity-animate";
+import Notifications from "@kyvg/vue3-notification";
 
-import App from './App.vue'
-import router from './router'
+const app = createApp(App);
 
-const app = createApp(App)
-
-app.use(createPinia())
-app.use(router)
-
-app.mount('#app')
+app.use(createPinia().use(piniaPluginPersistedstate));
+app.use(router);
+app.use(Notifications, { velocity });
+app.mount("#app");
