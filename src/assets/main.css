@@ -3,22 +3,34 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --background-color: rgb(241, 245, 249);
+  --primary-blue: rgb(26, 36, 52);
+  --secondary-blue: rgb(51, 58, 71);
+  --sea-blue: rgb(60, 80, 224);
+  --green: rgb(39, 192, 141);
+  --red: rgb(220, 53, 69);
+}
 
 * {
-  @apply text-sm;
+  @apply text-base;
 }
 
 body {
   @apply text-gray-600 tracking-wide;
   font-family: "poppins", "Open Sans", "Helvetica Neue", sans-serif;
+  background: var(--background-color);
 }
 
 nav a.router-link-exact-active {
-  @apply font-bold;
+  @apply font-medium bg-[--secondary-blue];
 }
 nav a:hover {
-  @apply font-semibold;
+  @apply font-medium;
 }
 nav a {
   @apply ease-in duration-100;
+}
+.padding{
+ @apply px-12
 }
