@@ -7,40 +7,50 @@
       <RouterLink to="/dashboard">
         <div
           class="flex flex-col gap-2 w-full justify-center items-center hover:bg-[--secondary-blue] py-2">
-          <div class="p-2 w-10 h-10 rounded bg-zinc-100"></div>
-          <span class="text-sm leading-none">Dashboard</span>
+          <div class="p-2 w-10 h-10 rounded">
+            <img src="../../assets/icons/dashboard.svg" alt="" />
+          </div>
+          <span class="text-xs leading-none">Dashboard</span>
         </div>
       </RouterLink>
 
       <RouterLink to="/products">
         <div
           class="flex flex-col gap-2 w-full justify-center items-center hover:bg-[--secondary-blue] py-2">
-          <div class="p-2 w-10 h-10 rounded bg-zinc-100"></div>
-          <p class="text-sm leading-none">Products</p>
+          <div class="p-2 w-10 h-10">
+            <img src="../../assets/icons/products.svg" alt="" />
+          </div>
+          <p class="text-xs leading-none">Products</p>
         </div>
       </RouterLink>
 
       <RouterLink to="/sell">
         <div
           class="flex flex-col gap-2 w-full justify-center items-center hover:bg-[--secondary-blue] py-2">
-          <div class="p-2 w-10 h-10 rounded bg-zinc-100"></div>
-          <p class="text-sm leading-none">Sell</p>
+          <div class="p-2 w-10 h-10">
+            <img src="../../assets/icons/cart.svg" alt="" />
+          </div>
+          <p class="text-xs leading-none">Cart</p>
         </div>
       </RouterLink>
 
       <RouterLink to="/transactions">
         <div
           class="flex flex-col gap-2 w-full justify-center items-center hover:bg-[--secondary-blue] py-2">
-          <div class="p-2 w-10 h-10 rounded bg-zinc-100"></div>
-          <p class="text-sm leading-none">Transactions</p>
+          <div class="p-2 w-10 h-10">
+            <img src="../../assets/icons/transaction.svg" alt="" />
+          </div>
+          <p class="text-xs leading-none">Transactions</p>
         </div>
       </RouterLink>
 
       <RouterLink to="/analytics">
         <div
           class="flex flex-col gap-2 w-full justify-center items-center hover:bg-[--secondary-blue] py-2">
-          <div class="p-2 w-10 h-10 rounded bg-zinc-100"></div>
-          <p class="text-sm leading-none">Analytics</p>
+          <div class="p-2 w-10 h-10">
+            <img src="../../assets/icons/analytics.svg" alt="" />
+          </div>
+          <p class="text-xs leading-none">Analytics</p>
         </div>
       </RouterLink>
     </nav>
