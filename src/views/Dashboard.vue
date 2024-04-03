@@ -2,6 +2,7 @@
 import { RouterView } from "vue-router";
 import Topbar from "@/components/navigation/Topbar.vue";
 import Sidebar from "@/components/navigation/Sidebar.vue";
+import Navigator from "@/components/navigation/Navigator.vue";
 </script>
 
 <template>
@@ -13,7 +14,10 @@ import Sidebar from "@/components/navigation/Sidebar.vue";
       <div>
         <div>
           <Topbar />
-          <div class="padding"><RouterView /></div>
+          <Navigator />
+          <div class="padding">
+            <RouterView />
+          </div>
         </div>
       </div>
     </div>
