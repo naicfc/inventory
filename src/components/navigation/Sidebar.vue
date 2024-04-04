@@ -28,9 +28,9 @@
         <div
           class="flex flex-col gap-2 w-full justify-center items-center hover:bg-[--secondary-blue] py-2">
           <div class="p-2 w-10 h-10">
-            <img src="../../assets/icons/cart.svg" alt="" />
+            <img src="../../assets/icons/dollar.svg" alt="" />
           </div>
-          <p class="text-xs leading-none">Cart</p>
+          <p class="text-xs leading-none">Sell</p>
         </div>
       </RouterLink>
 
