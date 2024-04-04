@@ -55,17 +55,21 @@ nav a:hover {
 }
 
 .green-button {
-  @apply text-white bg-emerald-500 rounded text-center cursor-pointer hover:bg-emerald-600 duration-300;
+  @apply text-white bg-emerald-500 rounded text-center cursor-pointer hover:bg-emerald-600 duration-300 text-sm;
 }
 
 .blue-button {
-  @apply text-white bg-[#0053D3] rounded text-center hover:bg-blue-600 duration-300 cursor-pointer;
+  @apply text-white bg-[#0053D3] rounded text-center hover:bg-blue-600 duration-300 cursor-pointer text-sm;
 }
 
 .orange-button {
-  @apply text-white bg-orange-500 rounded text-center cursor-pointer hover:bg-orange-600 duration-300;
+  @apply text-white bg-orange-500 rounded text-center cursor-pointer hover:bg-orange-600 duration-300 text-sm;
 }
 
 .sub-header {
-  @apply text-[#2d4a77] text-sm pb-2 font-semibold;
+  @apply text-[#0053D3] text-sm pb-2 font-semibold;
+}
+
+.blue{
+  @apply text-[#0053D3]
 }
