@@ -1,5 +1,5 @@
 <template>
-  <div class="py-3 px-12 sticky top-0 bg-white shadow">
+  <div class="py-3 px-12 sticky top-0 bg-white shadow z-[1]">
     <div class="flex justify-between items-center">
       <div class="">
         <p class="text-lg font-bold text-gray-700">Hello, Godfred</p>
@@ -10,7 +10,7 @@
           <div
             class="bg-gray-500/30 p-2 rounded-full flex justify-center items-center">
             <img
-              src="../../assets/icons/notificationbluegrad.png"
+              src="../../assets/icons/cart.svg"
               width="15"
               alt="" />
           </div>
@@ -19,8 +19,8 @@
           <div
             class="bg-gray-500/30 p-2 rounded-full flex justify-center items-center">
             <img
-              src="../../assets/icons/messagebluegrad.png"
-              width="15"
+              src="../../assets/icons/notificationbluegrad.png"
+              width="16"
               alt="" />
           </div>
         </RouterLink>
@@ -33,11 +33,13 @@
 
         <div class="flex ml-4 gap-2 items-center">
           <div>
-            <p class="text-xs font-semibold capitalize leading-none">godfred nai</p>
+            <p class="text-xs font-semibold capitalize leading-none">
+              godfred nai
+            </p>
             <p class="text-xs text-right text-gray-400">salesman</p>
           </div>
           <div>
-            <img src="../../assets/icons/user(7).png" width="35" alt="">
+            <img src="../../assets/icons/user(7).png" width="35" alt="" />
           </div>
         </div>
       </div>
