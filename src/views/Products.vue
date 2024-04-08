@@ -5,10 +5,22 @@
     </div>
     <div class="flex justify-between items-center">
       <div class="flex gap-2">
-        <select name="category" id="category" class="form-input">
-          <option value="" disabled selected>Filter By Categories</option>
+        <select
+          name="category"
+          id="category"
+          class="form-input"
+          v-model="selectedCategory"
+          @change="filterProducts">
+          <option value="" disabled selected>Filter by categories</option>
+          <option value="all">All Categories</option>
+          <option
+            v-for="category in categories"
+            :key="category._id"
+            :value="category._id">
+            {{ category.name }}
+          </option>
         </select>
-        <button class="green-button px-3" @click="openModal('category')">
+        <button class="green-button px-3 w-full" @click="openModal('category')">
           New Category
         </button>
       </div>
@@ -47,6 +59,7 @@
                   <p>Edit</p>
                 </div>
                 <div
+                  @click="deleteProduct(product)"
                   class="flex gap-1 items-center cursor-pointer text-red-500">
                   <img src="../assets/icons/bin.svg" width="19" alt="" />
                   <p>Delete</p>
@@ -64,8 +77,9 @@
 </template>
 
 <script setup>
-import { ref, onBeforeMount } from "vue";
+import { ref, onBeforeMount, computed, watch } from "vue";
 import { useProductStore } from "@/stores/products";
+import { useCategoryStore } from "@/stores/categories.js";
 import {
   FwbA,
   FwbTable,
@@ -81,7 +95,10 @@ import NewCategory from "@/components/products/NewCategory.vue";
 const showProductsModal = ref(false);
 const showCategoryModal = ref(false);
 const productStore = useProductStore();
-const products = ref(null);
+const categoryStore = useCategoryStore();
+const products = ref(productStore.products);
+const categories = ref(categoryStore.categories);
+const selectedCategory = ref("");
 
 const openModal = (name) => {
   if (name == "category") {
@@ -92,14 +109,39 @@ const openModal = (name) => {
   }
 };
 
+const filterProducts = () => {
+  console.log(selectedCategory.value);
+};
+
 const closeModal = () => {
   showCategoryModal.value = false;
   showProductsModal.value = false;
 };
 
+const deleteProduct = (product) => {
+  if (
+    window.confirm(
+      "Do you want to delete" +
+        " " +
+        product.name +
+        "?" + " " +
+        "This action cannot be undone",
+    )
+  ) {
+    console.log("deleted:", product);
+  }
+};
+
 onBeforeMount(() => {
-  productStore.getProducts().then((data) => {
-    products.value = data;
-  });
+  if (productStore.products == null) {
+    productStore.getProducts().then((data) => {
+      products.value = data;
+    });
+  }
+  if (categoryStore.categories == null) {
+    categoryStore.getCategories().then((data) => {
+      categories.value = data;
+    });
+  }
 });
 </script>
