@@ -6,28 +6,40 @@
         <p class="text-xs text-gray-400">{{ formattedDate }}</p>
       </div>
       <div class="flex items-center gap-4">
-        <RouterLink to="/login">
-          <div
-            class="bg-gray-500/30 p-2 rounded-full flex justify-center items-center">
-            <img
-              src="../../assets/icons/cart.svg"
-              width="15"
-              alt="" />
+        <RouterLink to="/cart">
+          <div class="flex">
+            <div
+              class="bg-gray-500/30 p-2 rounded-full flex justify-center items-center">
+              <img src="../../assets/icons/cart.svg" width="15" alt="" />
+            </div>
+            <div>
+              <div class="w-2 h-2 bg-green-400 rounded-full"></div>
+            </div>
           </div>
         </RouterLink>
         <RouterLink to="/login">
-          <div
-            class="bg-gray-500/30 p-2 rounded-full flex justify-center items-center">
-            <img
-              src="../../assets/icons/notificationbluegrad.png"
-              width="16"
-              alt="" />
+          <div class="flex">
+            <div
+              class="bg-gray-500/30 p-2 rounded-full flex justify-center items-center">
+              <img
+                src="../../assets/icons/notificationbluegrad.png"
+                width="16"
+                alt="" />
+            </div>
+            <div>
+              <div class="w-2 h-2 bg-green-400 rounded-full"></div>
+            </div>
           </div>
         </RouterLink>
-        <RouterLink to="/login">
-          <div
-            class="bg-gray-500/30 p-2 rounded-full flex justify-center items-center">
-            <img src="../../assets/icons/clock.svg" width="15" alt="" />
+        <RouterLink to="/products/expiring">
+          <div class="flex">
+            <div
+              class="bg-gray-500/30 p-2 rounded-full flex justify-center items-center">
+              <img src="../../assets/icons/clock.svg" width="15" alt="" />
+            </div>
+            <div>
+              <div class="w-2 h-2 bg-green-400 rounded-full"></div>
+            </div>
           </div>
         </RouterLink>
 

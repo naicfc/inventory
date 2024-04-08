@@ -14,7 +14,7 @@
         </div>
       </RouterLink>
 
-      <RouterLink to="/products">
+      <RouterLink to="/products/allproducts">
         <div
           class="flex flex-col gap-2 w-full justify-center items-center hover:bg-[--secondary-blue] py-2">
           <div class="p-2 w-10 h-10">
