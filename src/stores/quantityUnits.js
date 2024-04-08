@@ -1,49 +1,48 @@
 import { defineStore } from "pinia";
 const initialState = {
-  categories: null,
+  units: null,
 };
 
-export const useCategoryStore = defineStore("categoryStore", {
+export const useQuantityUnitStore = defineStore("quantityUnitStore", {
   state: () => ({ ...initialState }),
   actions: {
     resetState() {
       Object.assign(this, initialState);
     },
-    async getCategories() {
+    async getQuantityUnits() {
       try {
-        const res = await fetch(`http://localhost:8080/api/categories`, {
+        const res = await fetch(`http://localhost:8080/api/quantityunits`, {
           method: "GET",
-          mode: "cors",
-          cache: "no-cache",
-          credentials: "same-origin",
           headers: {
             "Content-Type": "application/json",
           },
-          redirect: "follow",
-          referrerPolicy: "no-referrer",
         });
+
         if (res.ok) {
           const data = await res.json();
           console.log(data);
-          this.categories = data;
+          this.units = data;
           return data;
         } else {
-          throw new Error(res);
+          throw new Error("Failed to fetch units");
         }
       } catch (error) {
         console.log(error);
         throw new Error(error);
       }
     },
-    async addCategory(data) {
+    async addQuantityUnits(data) {
       try {
-        const response = await fetch("http://localhost:8080/api/categories", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
+        const response = await fetch(
+          "http://localhost:8080/api/quantityunits",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
           },
-          body: JSON.stringify(data),
-        });
+        );
 
         if (!response.ok) {
           throw new Error("Failed to create category");
@@ -51,7 +50,7 @@ export const useCategoryStore = defineStore("categoryStore", {
 
         const responseData = await response.json();
         console.log("response: ", responseData);
-        this.categories.push(responseData);
+        this.units.push(responseData);
         return responseData;
       } catch (error) {
         console.error("Error:", error.message);

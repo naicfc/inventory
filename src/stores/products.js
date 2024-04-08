@@ -24,10 +24,11 @@ export const useProductStore = defineStore("productStore", {
         });
         if (res.ok) {
           const data = await res.json();
+          this.products = data;
           console.log(data);
           return data;
         } else {
-          throw new Error(res);
+          throw new Error("Could not fetch data");
         }
       } catch (error) {
         console.log(error);
@@ -36,7 +37,7 @@ export const useProductStore = defineStore("productStore", {
     },
     async getProduct(id) {
       try {
-        const res = await fetch(`https://`, {
+        const res = await fetch(`https://localhost:8080/api/products/${id}`, {
           method: "GET",
           mode: "cors",
           cache: "no-cache",
@@ -50,9 +51,10 @@ export const useProductStore = defineStore("productStore", {
         if (res.ok) {
           const data = await res.json();
           console.log(data);
+          this.products.push(data);
           return data;
         } else {
-          throw new Error(res);
+          throw new Error("Could not add data");
         }
       } catch (error) {
         console.log(error);
@@ -60,48 +62,35 @@ export const useProductStore = defineStore("productStore", {
       }
     },
     async addProduct(data) {
-      async function postData(url = "", data = {}) {
-        try {
-          const response = await fetch(url, {
-            method: "POST",
-            mode: "cors",
-            cache: "no-cache",
-            credentials: "same-origin",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            redirect: "follow",
-            referrerPolicy: "no-referrer",
-            body: JSON.stringify(data),
-          });
-          return response.json();
-        } catch (error) {
-          console.log(error.message);
-          throw new Error(error.message);
-        }
-      }
+      try {
+        const response = await fetch("http://localhost:8080/api/products", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        });
 
-      const res = await postData(`https://`, data);
-      if (res.ok) {
-        const data = await res.json();
-        console.log(data);
-        return data;
-      } else {
-        throw new Error(res);
+        if (!response.ok) {
+          throw new Error("Failed to create product");
+        }
+
+        const responseData = await response.json();
+        console.log("response: ", responseData);
+        this.products?.push(responseData);
+        return responseData;
+      } catch (error) {
+        console.error("Error:", error.message);
       }
     },
     async deleteProduct(id) {
       try {
-        const res = await fetch(`https://`, {
+        const res = await fetch(`https://localhost:8080/api/products/${id}`, {
           method: "DELETE",
-          mode: "cors",
-          cache: "no-cache",
-          credentials: "same-origin",
+
           headers: {
             "Content-Type": "application/json",
           },
-          redirect: "follow",
-          referrerPolicy: "no-referrer",
         });
         if (res.ok) {
           const data = await res.json();
@@ -110,8 +99,11 @@ export const useProductStore = defineStore("productStore", {
           const newProductsArray = this.products.filter((product) => {
             return product._id !== data._id;
           });
+
           this.products = newProductsArray;
           return data;
+        } else {
+          throw new Error("Could not delete data");
         }
       } catch (error) {
         console.log(error);
