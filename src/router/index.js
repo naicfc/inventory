@@ -9,11 +9,6 @@ const router = createRouter({
       component: () => import("../views/Dashboard.vue"),
       children: [
         {
-          path: "/login",
-          name: "login",
-          component: () => import("../views/Login.vue"),
-        },
-        {
           path: "/analytics",
           name: "analytics",
           component: () => import("../views/Analytics.vue"),
@@ -36,9 +31,30 @@ const router = createRouter({
         {
           path: "/products",
           name: "products",
-          component: () => import("../views/Products.vue"),
+          children: [
+            {
+              path: "/products/allproducts",
+              name: "allproducts",
+              component: () => import("../views/Products.vue"),
+            },
+            {
+              path: "/products/expiring",
+              name: "expiringproducts",
+              component: () => import("../views/ExpiringProducts.vue"),
+            },
+          ],
+        },
+        {
+          path: "/cart",
+          name: "cart",
+          component: () => import("../views/Cart.vue"),
         },
       ],
+    },
+    {
+      path: "/login",
+      name: "login",
+      component: () => import("../views/Login.vue"),
     },
   ],
 });
