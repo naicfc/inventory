@@ -18,34 +18,29 @@
         </div>
 
         <div>
-          <label for="student" class="block">Category Name</label>
+          <label for="name" class="block">Name</label>
           <input
             type="text"
+            id="name"
+            placeholder="Category Name"
             class="p-3 w-full rounded border-2 border-gray-300 bg-transparent"
-            required />
+            required
+            v-model="name" />
         </div>
         <div>
-          <label for="class" class="block">Category</label>
+          <label for="description" class="block">Description</label>
           <input
-            placeholder="Class Score"
-            id="class"
-            type="number"
+            placeholder="Category Description"
+            id="description"
+            type="text"
             class="p-3 w-full rounded border-2 border-gray-300 bg-transparent"
-            required />
-        </div>
-        <div>
-          <label for="exam" class="block">Description</label>
-          <input
-            placeholder="Exam Score"
-            id="exam"
-            type="number"
-            class="p-3 w-full rounded border-2 border-gray-300 bg-transparent"
-            required />
+            required
+            v-model="description" />
         </div>
         <button class="blue-button p-3" type="submit">
           <div class="flex gap-2 items-center justify-center">
             <fwb-spinner color="gray" size="4" v-if="loading" />
-            <p>Add Cateory</p>
+            <p>Add Category</p>
           </div>
         </button>
       </form>
@@ -57,10 +52,14 @@
 import { ref, computed, onBeforeMount } from "vue";
 import { useNotification } from "@kyvg/vue3-notification";
 import { FwbSpinner } from "flowbite-vue";
+import { useCategoryStore } from "@/stores/categories.js";
 
+const categoryStore = useCategoryStore();
 const { notify } = useNotification();
 const disabled = ref(false);
 const loading = ref(false);
+const name = ref("");
+const description = ref("");
 const emit = defineEmits(["closeModal"]);
 
 const closeModal = () => {
@@ -72,7 +71,32 @@ const handleSubmit = async () => {
   loading.value = true;
 
   try {
-    const data = {};
+    const data = {
+      name: name.value,
+      description: description.value,
+    };
+    categoryStore
+      .addCategory(data)
+      .then((res) => {
+        setTimeout(() => {
+          disabled.value = false;
+          loading.value = false;
+          closeModal();
+          notify({
+            type: "success",
+            title: "Success",
+            text: `${res.name} has been added successfully`,
+          });
+        }, 2000);
+      })
+      .catch((error) => {
+        console.log(error);
+        notify({
+          type: "error",
+          title: "Something Went wrong",
+          text: error.message,
+        });
+      });
   } catch (error) {
     console.error("Error:", error);
     disabled.value = false;
