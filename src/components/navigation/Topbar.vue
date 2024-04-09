@@ -1,5 +1,5 @@
 <template>
-  <div class="py-3 px-12 sticky top-0 bg-white shadow z-[1]">
+  <div class="py-3 px-12 sticky top-0 bg-[#fdf9f9] shadow z-[1]">
     <div class="flex justify-between items-center">
       <div class="">
         <p class="text-lg font-bold text-gray-700">Hello, Godfred</p>
@@ -12,8 +12,11 @@
               class="bg-gray-500/30 p-2 rounded-full flex justify-center items-center">
               <img src="../../assets/icons/cart.svg" width="15" alt="" />
             </div>
-            <div>
-              <div class="w-2 h-2 bg-green-400 rounded-full"></div>
+            <div v-if="cartStore.cart?.length > 0">
+              <div
+                class="w-3 h-3 bg-green-400 rounded-full text-[8px] text-white text-center">
+                {{ cartStore.cart?.length }}
+              </div>
             </div>
           </div>
         </RouterLink>
@@ -27,7 +30,7 @@
                 alt="" />
             </div>
             <div>
-              <div class="w-2 h-2 bg-green-400 rounded-full"></div>
+              <div class="w-3 h-3 bg-blue-400 rounded-full text-[8px] text-white text-center"></div>
             </div>
           </div>
         </RouterLink>
@@ -38,7 +41,7 @@
               <img src="../../assets/icons/clock.svg" width="15" alt="" />
             </div>
             <div>
-              <div class="w-2 h-2 bg-green-400 rounded-full"></div>
+              <div class="w-3 h-3 bg-red-400 rounded-full text-[8px] text-white text-center"></div>
             </div>
           </div>
         </RouterLink>
@@ -60,6 +63,9 @@
 </template>
 
 <script setup>
+import { useCartStore } from "@/stores/cart";
+
+const cartStore = useCartStore();
 const currentDate = new Date();
 
 const options = {
