@@ -17,7 +17,7 @@
     </div>
 
     <ul>
-      <li>Transactions this week -- number</li>
+      <li>Transactions this week -- numbers</li>
       <li>Transactions last week -- number</li>
       <li>Out of stock items - number</li>
       <li>Expiring Items</li>
