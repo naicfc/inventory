@@ -26,16 +26,25 @@
           <fwb-table-head-cell>Category</fwb-table-head-cell>
           <fwb-table-head-cell>Quantity</fwb-table-head-cell>
           <fwb-table-head-cell>Price</fwb-table-head-cell>
+          <fwb-table-head-cell>Price</fwb-table-head-cell>
           <fwb-table-head-cell class="text-center">Actions</fwb-table-head-cell>
         </fwb-table-head>
         <fwb-table-body>
           <fwb-table-row v-for="(product, index) in searchList">
-            <fwb-table-cell>{{ index }}</fwb-table-cell>
+            <fwb-table-cell>{{ index + 1 }}</fwb-table-cell>
             <fwb-table-cell>{{ product.name }}</fwb-table-cell>
             <fwb-table-cell>{{ product.categoryID.name }}</fwb-table-cell>
             <fwb-table-cell>{{ product.quantity }}</fwb-table-cell>
             <fwb-table-cell>
               GHC {{ product.unitPrices.retailPrice.toFixed(2) }}
+            </fwb-table-cell>
+            <fwb-table-cell>
+              <form action="">
+                <div class="flex gap-2">
+                  <input type="radio" name="type" id="type" />Retail
+                  <input type="radio" name="type" id="type" /> Wholesale
+                </div>
+              </form>
             </fwb-table-cell>
             <fwb-table-cell>
               <div class="text-center">
@@ -65,17 +74,11 @@ import {
 } from "flowbite-vue";
 import { useCartStore } from "@/stores/cart";
 
-const showProductsModal = ref(false);
-const showCategoryModal = ref(false);
 const productStore = useProductStore();
 const products = ref(productStore.products);
 const selectedCategory = ref("");
 const search = ref("");
 const cartStore = useCartStore();
-
-const filterProducts = () => {
-  console.log(selectedCategory.value);
-};
 
 const addToCart = (product) => {
   console.log(product);
@@ -83,14 +86,15 @@ const addToCart = (product) => {
 };
 
 watch(search, () => {
-  console.log("watch trihggerd");
+  console.log("watch triggered");
 });
+
 watchEffect(() => {
-  console.log("watheffect triggerd");
+  console.log("watch effect triggerd");
 });
 
 const searchList = computed(() => {
-  return products.value.filter((product) =>
+  return products.value?.filter((product) =>
     product.name.includes(search.value),
   );
 });
