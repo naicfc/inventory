@@ -166,7 +166,7 @@ const discount = computed(() => {
 });
 
 const VAT = computed(() => {
-  return subTotal.value * 0.02;
+  return subTotal.value * 0.1;
 });
 
 const total = computed(() => {
@@ -206,7 +206,7 @@ const createTransaction = () => {
             title: "Success",
             text: `transaction processed successfully`,
           });
-          cartStore.cart = [];
+          cartStore.resetState();
           productStore.getProducts();
           router.push("/transactions");
         }, 2000);
