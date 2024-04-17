@@ -12,7 +12,7 @@
           v-model="selectedCategory"
           @change="filterProducts">
           <option value="" disabled selected>Filter by categories</option>
-          <option value="all">All Categories</option>
+          <option value="">All Categories</option>
           <option
             v-for="category in categories"
             :key="category._id"
@@ -45,7 +45,7 @@
           <fwb-table-head-cell>Actions</fwb-table-head-cell>
         </fwb-table-head>
         <fwb-table-body>
-          <fwb-table-row v-for="(product, index) in products">
+          <fwb-table-row v-for="(product, index) in filteredList">
             <fwb-table-cell>{{ index }}</fwb-table-cell>
             <fwb-table-cell>{{ product.name }}</fwb-table-cell>
             <fwb-table-cell>{{ product.categoryID?.name }}</fwb-table-cell>
@@ -113,6 +113,23 @@ const openModal = (name) => {
 const filterProducts = () => {
   console.log(selectedCategory.value);
 };
+
+const filteredList = computed(() => {
+  if (selectedCategory.value == "") {
+    return products.value;
+  } else {
+    let filtered = [];
+    products.value.forEach((item) => {
+      if (item.categoryID._id == selectedCategory.value) {
+        filtered.push(item);
+      }
+    });
+
+    console.log(filtered);
+
+    return filtered;
+  }
+});
 
 const qetQuantity = (product) => {
   let total = 0;
