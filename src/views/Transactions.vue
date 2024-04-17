@@ -1,5 +1,7 @@
 <template>
-  <div class="flex items-center justify-center h-[60vh]" v-if="transactions.length <= 0">
+  <div
+    class="flex items-center justify-center h-[60vh]"
+    v-if="transactions?.length <= 0">
     <p>No Transactions available</p>
   </div>
   <div class="flex flex-col gap-4" v-else>
@@ -31,7 +33,9 @@
               {{ formatDate(transaction.transactionDate) }}
             </p>
             <div class="flex gap-4 items-center">
-              <p class="font-semibold text-xs">GHC {{ transaction.totalPrice }}</p>
+              <p class="font-semibold text-xs">
+                GHC {{ transaction.totalPrice }}
+              </p>
               <div>
                 <button
                   @click="setReceipt(transaction)"
@@ -47,7 +51,7 @@
         <div class="flex justify-between items-center mb-6">
           <p class="sub-header">Invoice details</p>
           <div>
-            <button class="blue-button px-3">Print Receipt</button>
+            <button class="blue-button px-3 text-xs">Print Receipt</button>
           </div>
         </div>
         <div class="flex flex-col gap-4">
@@ -68,12 +72,12 @@
             </div>
           </div>
           <div>
-            <div class="grid grid-cols-4">
+            <div class="grid grid-cols-2 text-xs invoice-data">
               <div class="gray-border">
                 <p>
                   Invoice ID:
                   <br />
-                  <span class="text-xs text-wrap">
+                  <span>
                     {{ receipt?._id }}
                   </span>
                 </p>
@@ -82,7 +86,7 @@
                 <p>
                   Date Issued:
                   <br />
-                  <span class="text-xs" v-if="receipt !== null">
+                  <span v-if="receipt !== null">
                     {{ receiptDate }}
                   </span>
                 </p>
@@ -91,7 +95,7 @@
                 <p>
                   Invoice Type:
                   <br />
-                  <span class="text-xs uppercase">
+                  <span>
                     {{ receipt?.transactionType }}
                   </span>
                 </p>
@@ -100,7 +104,7 @@
                 <p>
                   Payment Method:
                   <br />
-                  <span class="text-xs uppercase">
+                  <span>
                     {{ receipt?.paymentMethod }}
                   </span>
                 </p>
@@ -123,8 +127,8 @@
                   :key="index">
                   <td class="text-left px-2 big-box">{{ product.name }}</td>
                   <td>{{ product.quantity }}</td>
-                  <td>{{ product.name }}</td>
-                  <td>nai</td>
+                  <td>{{ product.price.toFixed(2) }}</td>
+                  <td>{{ product.total.toFixed(2) }}</td>
                 </tr>
               </tbody>
             </table>
@@ -134,20 +138,26 @@
               <div>
                 <div class="grid grid-cols-3 py-1">
                   <div class="col-span-2">Subtotal</div>
-                  <div class="col-span-1">GHC {{ receipt?.subTotal }}</div>
+                  <div class="col-span-1">
+                    GHC {{ receipt?.subTotal.toFixed(2) }}
+                  </div>
                 </div>
                 <div class="grid grid-cols-3 py-1">
                   <div class="col-span-2">Discount</div>
-                  <div class="col-span-1">GHC {{ receipt?.discount }}</div>
+                  <div class="col-span-1">
+                    GHC {{ receipt?.discount.toFixed(2) }}
+                  </div>
                 </div>
                 <div class="grid grid-cols-3 pt-1 pb-3 border-b-2">
                   <div class="col-span-2">VAT</div>
-                  <div class="col-span-1">GHC {{ receipt?.VAT }}</div>
+                  <div class="col-span-1">
+                    GHC {{ receipt?.VAT.toFixed(2) }}
+                  </div>
                 </div>
                 <div class="grid grid-cols-3 py-3">
                   <div class="col-span-2">Total</div>
                   <div class="col-span-1 text-green-500">
-                    GHC {{ receipt?.totalPrice }}
+                    GHC {{ receipt?.totalPrice.toFixed(2) }}
                   </div>
                 </div>
               </div>
@@ -208,5 +218,11 @@ onBeforeMount(() => {
 <style scoped>
 .big-box {
   @apply py-4;
+}
+.invoice-data p {
+  @apply font-semibold;
+}
+.invoice-data span {
+  @apply font-normal uppercase text-xs;
 }
 </style>
