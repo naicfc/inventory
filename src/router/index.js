@@ -4,7 +4,7 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: "/",
+      path: "/home",
       name: "home",
       component: () => import("../views/Dashboard.vue"),
       children: [
@@ -42,6 +42,11 @@ const router = createRouter({
               name: "expiringproducts",
               component: () => import("../views/ExpiringProducts.vue"),
             },
+            {
+              path: "/products/add-product",
+              name: "addproduct",
+              component: () => import("../components/products/AddProduct.vue"),
+            },
           ],
         },
         {
@@ -52,7 +57,7 @@ const router = createRouter({
       ],
     },
     {
-      path: "/login",
+      path: "/",
       name: "login",
       component: () => import("../views/Login.vue"),
     },
