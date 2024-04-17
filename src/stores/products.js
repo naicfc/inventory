@@ -51,7 +51,7 @@ export const useProductStore = defineStore("productStore", {
         if (res.ok) {
           const data = await res.json();
           console.log(data);
-          this.products.push(data);
+          //this.products.push(data);
           return data;
         } else {
           throw new Error("Could not add data");
@@ -65,6 +65,7 @@ export const useProductStore = defineStore("productStore", {
       try {
         const response = await fetch("http://localhost:8080/api/products", {
           method: "POST",
+          mode: "cors",
           headers: {
             "Content-Type": "application/json",
           },
@@ -77,15 +78,49 @@ export const useProductStore = defineStore("productStore", {
 
         const responseData = await response.json();
         console.log("response: ", responseData);
-        this.products?.push(responseData);
+        this.getProducts();
         return responseData;
       } catch (error) {
         console.error("Error:", error.message);
+        throw new Error(error.message);
+      }
+    },
+    async addBatch(id, data) {
+      try {
+        const response = await fetch(
+          `http://localhost:8080/api/products/${id}/add-batch`,
+          {
+            method: "POST",
+            mode: "cors",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+          },
+        );
+
+        if (!response.ok) {
+          throw new Error("Failed to add batch");
+        }
+
+        const responseData = await response.json();
+        console.log("response: ", responseData);
+        //this.products?.push(responseData);
+
+        this.products.filter((product) => {
+          if (product._id == responseData._id) {
+            product = responseData;
+          }
+        });
+        return responseData;
+      } catch (error) {
+        console.error("Error:", error.message);
+        throw new Error(error.message);
       }
     },
     async deleteProduct(id) {
       try {
-        const res = await fetch(`https://localhost:8080/api/products/${id}`, {
+        const res = await fetch(`http://localhost:8080/api/products/${id}`, {
           method: "DELETE",
 
           headers: {

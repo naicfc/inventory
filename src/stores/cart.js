@@ -9,6 +9,14 @@ export const useCartStore = defineStore("cartStore", {
     resetState() {
       Object.assign(this, initialState);
     },
+    removeItem(id) {
+      const newCart = this.cart.filter((item) => {
+        return item.id !== id;
+      });
+      console.log(id);
+
+      this.cart = newCart;
+    },
   },
   persist: true,
 });
