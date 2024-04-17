@@ -70,10 +70,8 @@
             </fwb-table-cell>
             <fwb-table-cell>
               <div class="text-center">
-                <button
-                  class="blue-button px-4"
-                  @click="addToCart(product, index)">
-                  Add To Cart
+                <button class="blue-button px-4" @click="openmodal(product)">
+                  View
                 </button>
               </div>
             </fwb-table-cell>
@@ -82,6 +80,11 @@
       </fwb-table>
     </div>
   </div>
+
+  <Batch
+    v-if="showBatchModal"
+    @closeModal="closeModal"
+    :product="selectedProduct" />
 </template>
 
 <script setup>
@@ -98,6 +101,7 @@ import {
 } from "flowbite-vue";
 import { useCartStore } from "@/stores/cart";
 import { useNotification } from "@kyvg/vue3-notification";
+import Batch from "@/components/global/Batch.vue";
 
 const { notify } = useNotification();
 const productStore = useProductStore();
@@ -107,6 +111,17 @@ const search = ref("");
 const cartStore = useCartStore();
 const quantity = ref(Array(products.value?.length).fill(0));
 const selectedSaleType = ref(Array(products.value?.length).fill("retail"));
+const selectedProduct = ref({});
+const showBatchModal = ref(false);
+
+const openmodal = (product) => {
+  selectedProduct.value = product;
+  showBatchModal.value = true;
+};
+
+const closeModal = () => {
+  showBatchModal.value = false;
+};
 
 const increaseQuantity = (index) => {
   quantity.value[index] += 1;
