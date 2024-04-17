@@ -1,20 +1,13 @@
 <template>
-  <div
-    class="fixed top-0 left-0 h-screen w-full flex justify-center items-center z-[99] p-4 bg-black/70">
-    <div class="w-full sm:max-w-[600px]">
+  <div>
+    <div class="w-full">
       <form
         action=""
         @submit.prevent
         @submit="handleSubmit"
         class="border-2 rounded border-gray-300 p-4 flex flex-col gap-4 box-border bg-[--background-color]">
-        <div class="flex justify-between">
+        <div>
           <span class="font-semibold blue">Add New Product</span>
-          <img
-            src="../../assets/icons/circle-xmark-regular.svg"
-            width="20"
-            alt=""
-            class="cursor-pointer"
-            @click="closeModal" />
         </div>
 
         <div class="flex gap-4">
@@ -37,35 +30,6 @@
               class="form-input"
               v-model="description"
               required />
-          </div>
-        </div>
-
-        <div class="flex gap-4">
-          <div class="w-full">
-            <label for="quantity" class="block">Quantity</label>
-            <input
-              placeholder=""
-              type="number"
-              id="quantity"
-              v-model="quantity"
-              class="form-input"
-              required />
-          </div>
-          <div class="w-full">
-            <label for="category" class="block">Category</label>
-            <select
-              name="category"
-              id="category"
-              v-model="category"
-              class="form-input">
-              <option value="" selected disabled>Select Category</option>
-              <option
-                v-for="category in categories"
-                :value="category._id"
-                :key="category._id">
-                {{ category.name }}
-              </option>
-            </select>
           </div>
         </div>
 
@@ -99,24 +63,95 @@
             <label for="unit" class="block">Unit</label>
             <select name="unit" id="unit" v-model="unit" class="form-input">
               <option value="" selected disabled>Select Unit</option>
-              <option v-for="unit in units" :value="unit._id" :key="unit._id">
+              <option v-for="unit in units" :value="unit.name" :key="unit._id">
                 {{ unit.name }}
               </option>
             </select>
           </div>
           <div class="w-full">
-            <label for="expiryDate" class="block">Expiry Date</label>
+            <label for="expiryDate" class="block">Wholsesale Unit</label>
+            <select
+              name="unit"
+              id="unit"
+              v-model="wholesaleUnit"
+              class="form-input">
+              <option value="" selected disabled>Select Unit</option>
+              <option v-for="unit in units" :value="unit.name" :key="unit._id">
+                {{ unit.name }}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <div class="flex gap-4">
+          <div class="w-full">
+            <label for="category" class="block">Category</label>
+            <select
+              name="category"
+              id="category"
+              v-model="category"
+              class="form-input"
+              required>
+              <option value="" selected disabled>Select Category</option>
+              <option
+                v-for="category in categories"
+                :value="category._id"
+                :key="category._id">
+                {{ category.name }}
+              </option>
+            </select>
+          </div>
+          <div class="w-full">
+            <label for="quantity" class="block">
+              Wholesale Conversion Rate
+            </label>
             <input
               placeholder=""
-              id="expiryDate"
-              type="date"
+              type="number"
+              id="quantity"
+              v-model="conversionRate"
               class="form-input"
-              v-model="expiryDate"
               required />
           </div>
         </div>
 
-        <button class="blue-button p-3" type="submit">
+        <div class="flex flex-col gap-4">
+          <p class="font-semibold blue text-sm">Product Batch</p>
+          <div class="flex gap-2">
+            <div class="w-full">
+              <label for="" class="block">Batch Number</label>
+              <input
+                placeholder=""
+                id="batchNumber"
+                type="text"
+                class="form-input"
+                v-model="batchNumber"
+                required />
+            </div>
+            <div class="w-full">
+              <label for="" class="block">Quantity</label>
+              <input
+                placeholder=""
+                id="quantity"
+                type="number"
+                class="form-input"
+                v-model="quantity"
+                required />
+            </div>
+            <div class="w-full">
+              <label for="" class="block">Expiry Date</label>
+              <input
+                placeholder=""
+                id="date"
+                type="date"
+                class="form-input"
+                v-model="expiryDate"
+                required />
+            </div>
+          </div>
+        </div>
+
+        <button class="blue-button p-3" type="submit" :disabled="loading">
           <div class="flex gap-2 items-center justify-center">
             <fwb-spinner color="gray" size="4" v-if="loading" />
             <p>Add Product</p>
@@ -155,8 +190,12 @@ const quantity = ref("");
 const category = ref("");
 const retailPrice = ref("");
 const wholesalePrice = ref("");
+const defaultUnit = ref("");
+const wholesaleUnit = ref("");
 const unit = ref("");
 const expiryDate = ref("");
+const conversionRate = ref(1);
+const batchNumber = ref("");
 
 const handleSubmit = async () => {
   disabled.value = true;
@@ -164,18 +203,26 @@ const handleSubmit = async () => {
 
   try {
     const expiryDateObject = new Date(expiryDate.value);
+    const batches = [
+      {
+        batchNumber: batchNumber.value,
+        quantity: quantity.value,
+        expiryDate: expiryDateObject,
+      },
+    ];
 
     const data = {
       name: name.value,
       description: description.value,
-      quantity: quantity.value,
       categoryID: category.value,
       unitPrices: {
         wholesalePrice: wholesalePrice.value,
         retailPrice: retailPrice.value,
       },
       defaultUnit: unit.value,
-      expiryDate: expiryDateObject,
+      wholesaleUnit: wholesaleUnit.value,
+      conversionRate: conversionRate.value,
+      batches: batches,
     };
 
     console.log(data);

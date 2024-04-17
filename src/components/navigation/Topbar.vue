@@ -2,7 +2,7 @@
   <div class="py-3 px-12 sticky top-0 bg-[#fdf9f9] shadow z-[1]">
     <div class="flex justify-between items-center">
       <div class="">
-        <p class="text-lg font-bold text-gray-700">Hello, Godfred</p>
+        <p class="text-lg font-bold text-[--primary-blue]">Hello, Godfred</p>
         <p class="text-xs text-gray-400">{{ formattedDate }}</p>
       </div>
       <div class="flex items-center gap-4">
@@ -20,7 +20,7 @@
             </div>
           </div>
         </RouterLink>
-        <RouterLink to="/login">
+        <RouterLink to="/">
           <div class="flex">
             <div
               class="bg-gray-500/30 p-2 rounded-full flex justify-center items-center">
