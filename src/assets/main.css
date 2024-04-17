@@ -4,8 +4,8 @@
 @tailwind utilities;
 
 :root {
-  --background-color: rgb(241, 245, 249);
-  --primary-blue: rgb(26, 36, 52);
+  --background-color: rgb(243, 243, 243);
+  --primary-blue: rgb(24, 65, 130);
   --secondary-blue: rgb(51, 58, 71);
   --sea-blue: rgb(60, 80, 224);
   --green: rgb(39, 192, 141);
@@ -35,7 +35,7 @@ nav a:hover {
 }
 
 .header {
-  @apply font-extrabold text-2xl text-gray-700;
+  @apply font-extrabold text-2xl text-[--primary-blue];
 }
 
 .gray-border {
@@ -43,7 +43,7 @@ nav a:hover {
 }
 
 .box {
-  @apply rounded-md border-2 bg-[#fffdfd] shadow-lg;
+  @apply rounded-md border-2 bg-[#fffdfd] shadow;
 }
 
 .button {
