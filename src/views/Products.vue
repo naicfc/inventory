@@ -26,14 +26,15 @@
       </div>
 
       <div class="flex gap-2">
-        <button class="orange-button px-3 py-1" @click="openModal('product')">
-          New Product
-        </button>
+        <RouterLink to="/products/add-product">
+          <button class="orange-button px-3 py-1">New Product</button>
+        </RouterLink>
+
         <button class="blue-button px-3 py-1">Import Products</button>
       </div>
     </div>
 
-    <div>
+    <div class="py-4">
       <fwb-table hoverable class="box">
         <fwb-table-head>
           <fwb-table-head-cell>ID</fwb-table-head-cell>
@@ -47,8 +48,8 @@
           <fwb-table-row v-for="(product, index) in products">
             <fwb-table-cell>{{ index }}</fwb-table-cell>
             <fwb-table-cell>{{ product.name }}</fwb-table-cell>
-            <fwb-table-cell>{{ product.categoryID.name }}</fwb-table-cell>
-            <fwb-table-cell>{{ product.quantity }}</fwb-table-cell>
+            <fwb-table-cell>{{ product.categoryID?.name }}</fwb-table-cell>
+            <fwb-table-cell>{{ qetQuantity(product) }}</fwb-table-cell>
             <fwb-table-cell>
               GHC {{ product.unitPrices.retailPrice.toFixed(2) }}
             </fwb-table-cell>
@@ -72,7 +73,6 @@
     </div>
   </div>
 
-  <NewProduct v-if="showProductsModal" @closeModal="closeModal" />
   <NewCategory v-if="showCategoryModal" @closeModal="closeModal" />
 </template>
 
@@ -89,8 +89,8 @@ import {
   FwbTableHeadCell,
   FwbTableRow,
 } from "flowbite-vue";
-import NewProduct from "@/components/products/NewProduct.vue";
 import NewCategory from "@/components/products/NewCategory.vue";
+import { useNotification } from "@kyvg/vue3-notification";
 
 const showProductsModal = ref(false);
 const showCategoryModal = ref(false);
@@ -99,6 +99,7 @@ const categoryStore = useCategoryStore();
 const products = ref(productStore.products);
 const categories = ref(categoryStore.categories);
 const selectedCategory = ref("");
+const { notify } = useNotification();
 
 const openModal = (name) => {
   if (name == "category") {
@@ -113,6 +114,15 @@ const filterProducts = () => {
   console.log(selectedCategory.value);
 };
 
+const qetQuantity = (product) => {
+  let total = 0;
+  product?.batches.forEach((element) => {
+    total += element.quantity;
+  });
+
+  return total;
+};
+
 const closeModal = () => {
   showCategoryModal.value = false;
   showProductsModal.value = false;
@@ -124,20 +134,40 @@ const deleteProduct = (product) => {
       "Do you want to delete" +
         " " +
         product.name +
-        "?" + " " +
+        "?" +
+        " " +
         "This action cannot be undone",
     )
   ) {
     console.log("deleted:", product);
+    productStore
+      .deleteProduct(product._id)
+      .then((res) => {
+        console.log(res);
+        notify({
+          type: "success",
+          title: "Success",
+          text: `${res.name} deleted successfully`,
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+        notify({
+          type: "error",
+          title: "Something Went wrong",
+          text: error,
+        });
+      });
   }
 };
 
 onBeforeMount(() => {
-  if (productStore.products == null) {
+  if (productStore.products !== null) {
     productStore.getProducts().then((data) => {
       products.value = data;
     });
   }
+  console.log(products.value);
   if (categoryStore.categories == null) {
     categoryStore.getCategories().then((data) => {
       categories.value = data;

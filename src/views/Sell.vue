@@ -18,37 +18,61 @@
       </div>
     </div>
 
-    <div>
+    <div class="py-4">
       <fwb-table hoverable class="box">
         <fwb-table-head>
           <fwb-table-head-cell>ID</fwb-table-head-cell>
           <fwb-table-head-cell>Name</fwb-table-head-cell>
-          <fwb-table-head-cell>Category</fwb-table-head-cell>
+          <fwb-table-head-cell>Price</fwb-table-head-cell>
+          <fwb-table-head-cell>Type Of sale</fwb-table-head-cell>
           <fwb-table-head-cell>Quantity</fwb-table-head-cell>
-          <fwb-table-head-cell>Price</fwb-table-head-cell>
-          <fwb-table-head-cell>Price</fwb-table-head-cell>
           <fwb-table-head-cell class="text-center">Actions</fwb-table-head-cell>
         </fwb-table-head>
         <fwb-table-body>
           <fwb-table-row v-for="(product, index) in searchList">
             <fwb-table-cell>{{ index + 1 }}</fwb-table-cell>
             <fwb-table-cell>{{ product.name }}</fwb-table-cell>
-            <fwb-table-cell>{{ product.categoryID.name }}</fwb-table-cell>
-            <fwb-table-cell>{{ product.quantity }}</fwb-table-cell>
             <fwb-table-cell>
               GHC {{ product.unitPrices.retailPrice.toFixed(2) }}
             </fwb-table-cell>
             <fwb-table-cell>
               <form action="">
                 <div class="flex gap-2">
-                  <input type="radio" name="type" id="type" />Retail
-                  <input type="radio" name="type" id="type" /> Wholesale
+                  <input
+                    type="radio"
+                    v-model="selectedSaleType[index]"
+                    value="retail"
+                    :id="'retail' + index" />
+                  <label :for="'retail' + index">Retail</label>
+                  <input
+                    type="radio"
+                    v-model="selectedSaleType[index]"
+                    value="wholesale"
+                    :id="'wholesale' + index" />
+                  <label :for="'wholesale' + index">Wholesale</label>
                 </div>
               </form>
             </fwb-table-cell>
             <fwb-table-cell>
+              <div class="flex gap-2 items-center">
+                <div
+                  class="box w-6 h-6 flex items-center justify-center cursor-pointer"
+                  @click="increaseQuantity(index)">
+                  <p>+</p>
+                </div>
+                {{ quantity[index] }}
+                <div
+                  class="box w-6 h-6 flex items-center justify-center cursor-pointer"
+                  @click="decreaseQuantity(index)">
+                  <p>-</p>
+                </div>
+              </div>
+            </fwb-table-cell>
+            <fwb-table-cell>
               <div class="text-center">
-                <button class="blue-button px-4" @click="addToCart(product)">
+                <button
+                  class="blue-button px-4"
+                  @click="addToCart(product, index)">
                   Add To Cart
                 </button>
               </div>
@@ -73,16 +97,67 @@ import {
   FwbTableRow,
 } from "flowbite-vue";
 import { useCartStore } from "@/stores/cart";
+import { useNotification } from "@kyvg/vue3-notification";
 
+const { notify } = useNotification();
 const productStore = useProductStore();
 const products = ref(productStore.products);
 const selectedCategory = ref("");
 const search = ref("");
 const cartStore = useCartStore();
+const quantity = ref(Array(products.value?.length).fill(0));
+const selectedSaleType = ref(Array(products.value?.length).fill("retail"));
 
-const addToCart = (product) => {
-  console.log(product);
-  cartStore.cart.push(product);
+const increaseQuantity = (index) => {
+  quantity.value[index] += 1;
+  console.log(quantity.value);
+};
+
+const decreaseQuantity = (index) => {
+  quantity.value[index] -= 1;
+  console.log(quantity.value);
+};
+
+const addToCart = (product, index) => {
+  if (quantity.value[index] <= 0) {
+    notify({
+      type: "error",
+      title: "Warning",
+      text: `Quantity of ${product.name} cannot be zero or less`,
+      duration: 3000,
+    });
+
+    return true;
+  }
+  const saleType = selectedSaleType.value[index];
+  const price =
+    saleType === "retail"
+      ? product.unitPrices.retailPrice
+      : product.unitPrices.wholesalePrice;
+
+  const subTotal = price * quantity.value[index];
+  const discount = (product.discountPercentage / 100) * subTotal;
+  const total = subTotal - discount;
+
+  const data = {
+    id: product._id,
+    name: product.name,
+    type: saleType,
+    quantity: quantity.value[index],
+    price: price,
+    total: total,
+    discount: discount,
+  };
+
+  console.log(data);
+
+  cartStore.cart.unshift(data);
+
+  notify({
+    type: "success",
+    title: "Success",
+    text: `${product.name} has been added to cart`,
+  });
 };
 
 watch(search, () => {
@@ -95,7 +170,7 @@ watchEffect(() => {
 
 const searchList = computed(() => {
   return products.value?.filter((product) =>
-    product.name.includes(search.value),
+    product.name.toLowerCase().includes(search.value),
   );
 });
 
