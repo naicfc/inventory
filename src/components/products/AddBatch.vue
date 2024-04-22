@@ -12,7 +12,7 @@
         <div class="w-full">
           <label for="" class="block">Product</label>
           <select id="product" v-model="productID" class="form-input" required>
-            <option value="" selected disabled>Select Category</option>
+            <option value="" selected disabled>Select Product</option>
             <option
               v-for="product in products"
               :value="product._id"
