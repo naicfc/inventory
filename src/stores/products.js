@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 const initialState = {
   products: null,
+  selectedProductForEdit: null,
 };
 
 export const useProductStore = defineStore("productStore", {
