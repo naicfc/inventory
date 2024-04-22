@@ -55,7 +55,9 @@
             </fwb-table-cell>
             <fwb-table-cell>
               <div class="flex gap-2">
-                <div class="flex gap-1 items-center cursor-pointer">
+                <div
+                  class="flex gap-1 items-center cursor-pointer"
+                  @click="editProduct(product)">
                   <img src="../assets/icons/edit.svg" width="24" alt="" />
                   <p>Edit</p>
                 </div>
@@ -91,6 +93,7 @@ import {
 } from "flowbite-vue";
 import NewCategory from "@/components/products/NewCategory.vue";
 import { useNotification } from "@kyvg/vue3-notification";
+import router from "@/router";
 
 const showProductsModal = ref(false);
 const showCategoryModal = ref(false);
@@ -176,6 +179,11 @@ const deleteProduct = (product) => {
         });
       });
   }
+};
+
+const editProduct = (product) => {
+  productStore.selectedProductForEdit = product;
+  router.push("/products/edit");
 };
 
 onBeforeMount(() => {
