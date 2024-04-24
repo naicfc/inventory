@@ -28,4 +28,19 @@
 
 <script setup>
 import DashboardCard from "@/components/dashboard/DashboardCard.vue";
+import { useActivityStore } from "@/stores/activities";
+import { onBeforeMount, ref } from "vue";
+
+const activityStore = useActivityStore();
+const activities = ref(null);
+onBeforeMount(() => {
+  activityStore
+    .getActivities()
+    .then((res) => {
+      activities.value = res;
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+});
 </script>

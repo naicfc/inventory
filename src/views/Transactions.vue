@@ -73,7 +73,7 @@
           </div>
           <div>
             <div class="grid grid-cols-2 text-xs invoice-data">
-              <div class="gray-border">
+              <div class="p-1 border-2">
                 <p>
                   Invoice ID:
                   <br />
@@ -82,7 +82,7 @@
                   </span>
                 </p>
               </div>
-              <div class="gray-border">
+              <div class="p-1 border-2 border-l-0">
                 <p>
                   Date Issued:
                   <br />
@@ -91,7 +91,7 @@
                   </span>
                 </p>
               </div>
-              <div class="gray-border">
+              <div class="p-1 border-2 border-t-0">
                 <p>
                   Invoice Type:
                   <br />
@@ -100,7 +100,7 @@
                   </span>
                 </p>
               </div>
-              <div class="gray-border">
+              <div class="p-1 border-2 border-l-0 border-t-0">
                 <p>
                   Payment Method:
                   <br />

@@ -23,9 +23,8 @@
         <fwb-table-head>
           <fwb-table-head-cell>ID</fwb-table-head-cell>
           <fwb-table-head-cell>Name</fwb-table-head-cell>
-          <fwb-table-head-cell>Price</fwb-table-head-cell>
-          <fwb-table-head-cell>Type Of sale</fwb-table-head-cell>
-          <fwb-table-head-cell>Quantity</fwb-table-head-cell>
+          <fwb-table-head-cell>Retail</fwb-table-head-cell>
+          <fwb-table-head-cell>Wholesale</fwb-table-head-cell>
           <fwb-table-head-cell class="text-center">Actions</fwb-table-head-cell>
         </fwb-table-head>
         <fwb-table-body>
@@ -35,38 +34,9 @@
             <fwb-table-cell>
               GHC {{ product.unitPrices.retailPrice.toFixed(2) }}
             </fwb-table-cell>
+            
             <fwb-table-cell>
-              <form action="">
-                <div class="flex gap-2">
-                  <input
-                    type="radio"
-                    v-model="selectedSaleType[index]"
-                    value="retail"
-                    :id="'retail' + index" />
-                  <label :for="'retail' + index">Retail</label>
-                  <input
-                    type="radio"
-                    v-model="selectedSaleType[index]"
-                    value="wholesale"
-                    :id="'wholesale' + index" />
-                  <label :for="'wholesale' + index">Wholesale</label>
-                </div>
-              </form>
-            </fwb-table-cell>
-            <fwb-table-cell>
-              <div class="flex gap-2 items-center">
-                <div
-                  class="box w-6 h-6 flex items-center justify-center cursor-pointer"
-                  @click="increaseQuantity(index)">
-                  <p>+</p>
-                </div>
-                {{ quantity[index] }}
-                <div
-                  class="box w-6 h-6 flex items-center justify-center cursor-pointer"
-                  @click="decreaseQuantity(index)">
-                  <p>-</p>
-                </div>
-              </div>
+              GHC {{ product.unitPrices.wholesalePrice.toFixed(2) }}
             </fwb-table-cell>
             <fwb-table-cell>
               <div class="text-center">

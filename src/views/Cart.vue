@@ -142,7 +142,9 @@ import { useNotification } from "@kyvg/vue3-notification";
 import router from "@/router";
 import { FwbSpinner } from "flowbite-vue";
 import { useProductStore } from "@/stores/products";
+import { useAuthStore } from "@/stores/auth";
 
+const authStore = useAuthStore();
 const productStore = useProductStore();
 const cartStore = useCartStore();
 const cart = ref(cartStore.cart);
@@ -184,7 +186,20 @@ const itemCount = computed(() => {
   return cart.value?.length;
 });
 
+const clearList = () => {
+  if (window.confirm("Are you sure you want to clear the list?")) {
+    cartStore.resetState().then((res) => {
+      notify({
+        type: "warning",
+        title: "Success",
+        text: res,
+      });
+    });
+  }
+};
+
 const createTransaction = () => {
+  const userID = authStore.user.id;
   const data = {
     paymentMethod: "cash",
     products: cart.value,
@@ -192,6 +207,7 @@ const createTransaction = () => {
     discount: discount.value,
     VAT: VAT.value,
     total: total.value,
+    userID: userID,
   };
 
   try {
@@ -206,7 +222,13 @@ const createTransaction = () => {
             title: "Success",
             text: `transaction processed successfully`,
           });
-          cartStore.resetState();
+          cartStore.resetState().then((res) => {
+            notify({
+              type: "warning",
+              title: "Success",
+              text: res,
+            });
+          });
           productStore.getProducts();
           router.push("/transactions");
         }, 2000);
@@ -233,12 +255,7 @@ const createTransaction = () => {
 
 const removeItem = (item) => {
   if (window.confirm("Are you sure you want to remove item?")) {
-    cartStore.removeItem(item.id);
-  }
-};
-const clearList = () => {
-  if (window.confirm("Are you sure you want to clear the list?")) {
-    cartStore.resetState();
+    cartStore.removeItem(item.productId);
   }
 };
 

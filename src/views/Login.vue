@@ -9,7 +9,11 @@
           <div class="">
             <div class="flex justify-center items-center">
               <img src="../assets/icons/lock-solid.svg" width="13" />
-              <div><p class="text-lg p-2 text-center font-extrabold blue">User Login</p></div>
+              <div>
+                <p class="text-lg p-2 text-center font-extrabold blue">
+                  User Login
+                </p>
+              </div>
             </div>
             <p class="text-sm pb-3">
               Login with the username and password provided by your admin.
@@ -23,7 +27,7 @@
               <input
                 type="text"
                 id="email"
-                v-model="email"
+                v-model="username"
                 class="form-input" />
             </div>
             <div class="py-1">
@@ -39,7 +43,8 @@
             <div class="error" v-if="error">{{ error }}</div>
             <div class="pt-5">
               <button
-                class="p-2 blue-button w-full flex gap-2 justify-center items-center">
+                class="p-2 blue-button w-full flex gap-2 justify-center items-center"
+                :disabled="loading">
                 <div>
                   <fwb-spinner color="white" size="4" v-if="loading" />
                 </div>
@@ -61,21 +66,39 @@ import { useNotification } from "@kyvg/vue3-notification";
 import { useAuthStore } from "@/stores/auth";
 
 const authStore = useAuthStore();
-const email = ref("");
+const username = ref("");
 const password = ref("");
 const error = ref("");
 const loading = ref(false);
 const { notify } = useNotification();
+
 const handleSubmit = async () => {
   loading.value = true;
-  const user = {
-    email: email.value,
+  const data = {
+    username: username.value,
     password: password.value,
   };
-  console.log(user);
+  console.log(data);
+
   setTimeout(() => {
-    loading.value = false;
-    router.push("/dashboard");
-  }, 3000);
+    authStore
+      .login(data)
+      .then((res) => {
+        notify({
+          type: "success",
+          title: "Success",
+          text: `${res.username} logged in successfully`,
+        });
+        loading.value = false;
+        router.push("/dashboard");
+      })
+      .catch((error) => {
+        notify({
+          type: "error",
+          title: "Something Went wrong",
+          text: error,
+        });
+      });
+  }, 1000);
 };
 </script>

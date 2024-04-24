@@ -36,15 +36,17 @@
 
     <div class="py-4">
       <fwb-table hoverable class="box">
-        <fwb-table-head>
+        <fwb-table-head class="text-center">
           <fwb-table-head-cell>ID</fwb-table-head-cell>
           <fwb-table-head-cell>Name</fwb-table-head-cell>
           <fwb-table-head-cell>Category</fwb-table-head-cell>
           <fwb-table-head-cell>Quantity</fwb-table-head-cell>
-          <fwb-table-head-cell>Price</fwb-table-head-cell>
+          <fwb-table-head-cell>Retail</fwb-table-head-cell>
+          <fwb-table-head-cell>Wholesale</fwb-table-head-cell>
+          <fwb-table-head-cell>Stock Level</fwb-table-head-cell>
           <fwb-table-head-cell>Actions</fwb-table-head-cell>
         </fwb-table-head>
-        <fwb-table-body>
+        <fwb-table-body class="text-center">
           <fwb-table-row v-for="(product, index) in filteredList">
             <fwb-table-cell>{{ index }}</fwb-table-cell>
             <fwb-table-cell>{{ product.name }}</fwb-table-cell>
@@ -52,6 +54,14 @@
             <fwb-table-cell>{{ qetQuantity(product) }}</fwb-table-cell>
             <fwb-table-cell>
               GHC {{ product.unitPrices.retailPrice.toFixed(2) }}
+            </fwb-table-cell>
+            <fwb-table-cell>
+              GHC {{ product.unitPrices.wholesalePrice.toFixed(2) }}
+            </fwb-table-cell>
+            <fwb-table-cell>
+              <div class="bg-green-500 rounded-full text-center">
+                <p class="text-white">In Stock</p>
+              </div>
             </fwb-table-cell>
             <fwb-table-cell>
               <div class="flex gap-2">
