@@ -8,7 +8,7 @@
         <NewProduct />
       </div>
       <div class="col-span-2">
-        <AddBatch />
+        <!-- <AddBatch /> -->
       </div>
     </div>
   </div>

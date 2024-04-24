@@ -31,7 +31,11 @@
               <fwb-table-row v-for="(product, index) in props.product.batches">
                 <fwb-table-cell>{{ index + 1 }}</fwb-table-cell>
                 <fwb-table-cell>{{ product.batchNumber }}</fwb-table-cell>
-                <fwb-table-cell>{{ product.quantity }}</fwb-table-cell>
+                <fwb-table-cell>
+                  {{ product.quantity }} pcs. ({{
+                    product.quantity / props.product.conversionRate
+                  }}) whsl
+                </fwb-table-cell>
                 <fwb-table-cell>
                   {{ formatDate(product.expiryDate) }}
                 </fwb-table-cell>
@@ -73,7 +77,7 @@
                     <button
                       class="blue-button px-4"
                       @click="addToCart(product, index)">
-                      Add to cart
+                      Add
                     </button>
                   </div>
                 </fwb-table-cell>
@@ -148,6 +152,33 @@ const addToCart = (product, index) => {
       type: "error",
       title: "Warning",
       text: `Quantity of ${props.product.name} cannot be zero or less`,
+      duration: 3000,
+    });
+
+    return true;
+  }
+
+  if (quantity.value[index] > product.quantity) {
+    notify({
+      type: "error",
+      title: "Warning",
+      text: `Quantity cannot be more than available stock`,
+      duration: 3000,
+    });
+
+    return true;
+  }
+
+  const wholsalequantity = product.quantity / props.product.conversionRate;
+
+  if (
+    selectedSaleType.value[index] === "wholesale" &&
+    quantity.value[index] > wholsalequantity
+  ) {
+    notify({
+      type: "error",
+      title: "Warning",
+      text: `Quantity cannot be more than available stock`,
       duration: 3000,
     });
 

@@ -38,7 +38,7 @@
             <label for="retailPrice" class="block">Retail Price</label>
             <input
               placeholder=""
-              type="text"
+              step="any"
               pattern="[0-9]+(\.[0-9]+)?"
               id="retailPrice"
               class="form-input"
@@ -50,8 +50,8 @@
             <input
               placeholder=""
               id="wholesalePrice"
-              type="text"
-              pattern="[0-9]+(\.[0-9]+)?"
+              type="number"
+              step="any"
               class="form-input"
               v-model="wholesalePrice"
               required />
@@ -227,6 +227,7 @@ const handleSubmit = async () => {
 
     console.log(data);
 
+    return true;
     productStore
       .addProduct(data)
       .then((res) => {
