@@ -3,6 +3,7 @@ const initialState = {
   products: null,
   selectedProductForEdit: null,
 };
+const token = localStorage.getItem("token");
 
 export const useProductStore = defineStore("productStore", {
   state: () => ({ ...initialState }),
@@ -18,6 +19,7 @@ export const useProductStore = defineStore("productStore", {
           cache: "no-cache",
           credentials: "same-origin",
           headers: {
+            Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
           redirect: "follow",
@@ -44,6 +46,7 @@ export const useProductStore = defineStore("productStore", {
           cache: "no-cache",
           credentials: "same-origin",
           headers: {
+            Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
           redirect: "follow",
@@ -68,6 +71,7 @@ export const useProductStore = defineStore("productStore", {
           method: "POST",
           mode: "cors",
           headers: {
+            Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
           body: JSON.stringify(data),
@@ -125,6 +129,7 @@ export const useProductStore = defineStore("productStore", {
           method: "DELETE",
 
           headers: {
+            Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
         });
@@ -146,42 +151,37 @@ export const useProductStore = defineStore("productStore", {
         throw new Error(error);
       }
     },
-    async updateProduct(data) {
-      async function postData(url = "", data = {}) {
-        try {
-          const response = await fetch(url, {
-            method: "PATCH",
-            mode: "cors",
-            cache: "no-cache",
-            credentials: "same-origin",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            redirect: "follow",
-            referrerPolicy: "no-referrer",
-            body: JSON.stringify(data),
-          });
-          return response.json();
-        } catch (error) {
-          console.log(error.message);
-          throw new Error(error.message);
-        }
-      }
-
-      const res = await postData(`https://`, data);
-      if (res.ok) {
-        const data = await res.json();
-        console.log(data);
-
-        this.products.filter((product) => {
-          if (product._id == data._id) {
-            product = data;
-          }
+    async updateProduct(id, data) {
+      try {
+        const res = await fetch(`http://localhost:8080/api/products/${id}`, {
+          method: "PATCH",
+          mode: "cors",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
         });
 
-        return data;
-      } else {
-        throw new Error(res);
+        console.log(data);
+
+        if (res.ok) {
+          const data = await res.json();
+          console.log(data);
+
+          this.products.filter((product) => {
+            if (product._id == data._id) {
+              product = data;
+              console.log("data found and updated");
+            }
+          });
+
+          return data;
+        } else {
+          throw new Error("Failed to update product");
+        }
+      } catch (error) {
+        console.error("Error:", error.message);
       }
     },
   },

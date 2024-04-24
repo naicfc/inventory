@@ -1,6 +1,9 @@
+import router from "@/router";
 import { defineStore } from "pinia";
 const initialState = {
   user: null,
+  isLoggedIn: false,
+  users: null,
 };
 
 export const useAuthStore = defineStore("authStore", {
@@ -9,36 +12,60 @@ export const useAuthStore = defineStore("authStore", {
     resetState() {
       Object.assign(this, initialState);
     },
-    async login(username, password) {
+    async login(data) {
       try {
-        const res = await fetch(`http://localhost:8080/users/login`, {
+        const res = await fetch(`http://localhost:8080/api/user/login`, {
           method: "POST",
           mode: "cors",
-          cache: "no-cache",
-          credentials: "same-origin",
           headers: {
             "Content-Type": "application/json",
           },
-          redirect: "follow",
-          referrerPolicy: "no-referrer",
-          body: JSON.stringify({ username, password }),
+          body: JSON.stringify(data),
         });
 
         if (res.ok) {
-          const data = await res.json();
-          console.log(data);
-          this.user = data;
-          return data;
+          const userdata = await res.json();
+          console.log(userdata);
+          this.user = userdata;
+          this.isLoggedIn = true;
+          localStorage.setItem("token", userdata.token);
+          return userdata;
         } else {
-          throw new Error(res);
+          throw new Error("Could not login");
         }
       } catch (error) {
         console.log(error);
-        throw new Error(error);
+        throw new Error(error.message);
       }
     },
-    async registerUser(data) {},
-    logout() {},
+    async registerUser(data) {
+      try {
+        const res = await fetch(`http://localhost:8080/api/user/signup`, {
+          method: "POST",
+          mode: "cors",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        });
+
+        if (res.ok) {
+          const userdata = await res.json();
+          console.log(userdata);
+          return userdata;
+        } else {
+          const errorMessage = await res.json();
+          throw new Error(errorMessage.error || "Failed to fetch data");
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        throw new Error(error.message);
+      }
+    },
+    logout() {
+      this.isLoggedIn = false;
+      router.push("/");
+    },
   },
   persist: true,
 });

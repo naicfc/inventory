@@ -6,14 +6,16 @@ const initialState = {
 export const useCartStore = defineStore("cartStore", {
   state: () => ({ ...initialState }),
   actions: {
-    resetState() {
+    async resetState() {
       Object.assign(this, initialState);
+      this.cart = [];
+      return "Cart has been cleared";
     },
     removeItem(id) {
       const newCart = this.cart.filter((item) => {
-        return item.id !== id;
+        console.log(item);
+        return item.productId !== id;
       });
-      console.log(id);
 
       this.cart = newCart;
     },

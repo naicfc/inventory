@@ -2,6 +2,7 @@ import { defineStore } from "pinia";
 const initialState = {
   units: null,
 };
+const token = localStorage.getItem("token");
 
 export const useQuantityUnitStore = defineStore("quantityUnitStore", {
   state: () => ({ ...initialState }),
@@ -14,6 +15,7 @@ export const useQuantityUnitStore = defineStore("quantityUnitStore", {
         const res = await fetch(`http://localhost:8080/api/quantityunits`, {
           method: "GET",
           headers: {
+            Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
         });

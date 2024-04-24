@@ -1,7 +1,9 @@
 import { defineStore } from "pinia";
+import { useAuthStore } from "./auth";
 const initialState = {
   categories: null,
 };
+const token = localStorage.getItem("token");
 
 export const useCategoryStore = defineStore("categoryStore", {
   state: () => ({ ...initialState }),
@@ -17,6 +19,7 @@ export const useCategoryStore = defineStore("categoryStore", {
           cache: "no-cache",
           credentials: "same-origin",
           headers: {
+            Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
           redirect: "follow",
@@ -40,6 +43,7 @@ export const useCategoryStore = defineStore("categoryStore", {
         const response = await fetch("http://localhost:8080/api/categories", {
           method: "POST",
           headers: {
+            Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
           body: JSON.stringify(data),
