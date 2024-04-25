@@ -22,7 +22,7 @@
             </div>
           </div>
         </RouterLink>
-        <RouterLink to="/">
+        <RouterLink to="/notifications">
           <div class="flex">
             <div
               class="bg-gray-500/30 p-2 rounded-full flex justify-center items-center">
@@ -31,9 +31,11 @@
                 width="16"
                 alt="" />
             </div>
-            <div>
+            <div v-if="activityStore.notifications?.length > 0">
               <div
-                class="w-3 h-3 bg-blue-400 rounded-full text-[8px] text-white text-center"></div>
+                class="w-3 h-3 bg-blue-400 rounded-full text-[8px] text-white text-center">
+                {{ activityStore.notifications?.length }}
+              </div>
             </div>
           </div>
         </RouterLink>
@@ -43,9 +45,11 @@
               class="bg-gray-500/30 p-2 rounded-full flex justify-center items-center">
               <img src="../../assets/icons/clock.svg" width="15" alt="" />
             </div>
-            <div>
+            <div v-if="expired > 0 || expiring > 0">
               <div
-                class="w-3 h-3 bg-red-400 rounded-full text-[8px] text-white text-center"></div>
+                class="w-3 h-3 bg-red-400 rounded-full text-[8px] text-white text-center">
+                {{ expiring + expired }}
+              </div>
             </div>
           </div>
         </RouterLink>
@@ -87,14 +91,35 @@
 </template>
 
 <script setup>
+import { useActivityStore } from "@/stores/activities";
 import { useAuthStore } from "@/stores/auth";
 import { useCartStore } from "@/stores/cart";
+import { useProductStore } from "@/stores/products";
 import { FwbDropdown, FwbListGroup, FwbListGroupItem } from "flowbite-vue";
+import { computed, onMounted } from "vue";
+import { storeToRefs } from "pinia";
 
 const cartStore = useCartStore();
 const authStore = useAuthStore();
+const activityStore = useActivityStore();
+const productStore = useProductStore();
+const { expiringBatches, expiredBatches } = storeToRefs(productStore);
 const user = authStore.user;
 const currentDate = new Date();
+
+const expired = computed(() => {
+  return expiredBatches.value.length;
+});
+
+const expiring = computed(() => {
+  return expiringBatches.value.length;
+});
+
+const computeExpiry = computed(() => {
+  if (expired.value.length > 0 && expiring.value.length > 0) {
+    return expired.value.length + expiring.value.length;
+  }
+});
 
 const options = {
   weekday: "long",
@@ -116,4 +141,22 @@ const logout = () => {
     authStore.logout();
   }
 };
+
+const createNotification = () => {
+  if (expiringBatches.value.length > 0) {
+    activityStore.notifications.push({
+      title: "Expiration",
+      text: `${expiringBatches.value.length} products are expired`,
+    });
+  }
+  if (expiringBatches.value.length > 0) {
+    activityStore.notifications.push({
+      title: "Expiration",
+      text: `${expiredBatches.value.length} products are expiring`,
+    });
+  }
+};
+onMounted(() => {
+  createNotification();
+});
 </script>

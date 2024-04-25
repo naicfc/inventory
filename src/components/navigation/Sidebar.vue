@@ -53,6 +53,16 @@
           <p class="text-xs leading-none">Analytics</p>
         </div>
       </RouterLink>
+
+      <RouterLink to="/analytics">
+        <div
+          class="flex flex-col gap-2 w-full justify-center items-center hover:bg-[--secondary-blue] py-2">
+          <div class="p-2 w-10 h-10">
+            <img src="../../assets/icons/comments-dollar-solid.svg" alt="" />
+          </div>
+          <p class="text-xs leading-none">Returns</p>
+        </div>
+      </RouterLink>
     </nav>
   </div>
 </template>
