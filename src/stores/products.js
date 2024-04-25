@@ -189,7 +189,7 @@ export const useProductStore = defineStore("productStore", {
     expiredBatches(state) {
       var expiredBatches = [];
       for (const product of state.products) {
-        for (const batch of product.batches) {
+        for (const batch of product?.batches) {
           if (new Date(batch.expiryDate) < new Date()) {
             expiredBatches.push({
               productId: product._id,
@@ -206,7 +206,7 @@ export const useProductStore = defineStore("productStore", {
     expiringBatches(state) {
       var expiringBatches = [];
       for (const product of state.products) {
-        for (const batch of product.batches) {
+        for (const batch of product?.batches) {
           const expiryDate = new Date(batch.expiryDate);
           const today = new Date();
           const daysUntilExpiry = Math.floor(

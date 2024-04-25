@@ -3,6 +3,16 @@ import { RouterView } from "vue-router";
 import Topbar from "@/components/navigation/Topbar.vue";
 import Sidebar from "@/components/navigation/Sidebar.vue";
 import Navigator from "@/components/navigation/Navigator.vue";
+import { useProductStore } from "@/stores/products";
+import { onBeforeMount } from "vue";
+
+const productStore = useProductStore();
+
+onBeforeMount(() => {
+  if (productStore.products == null) {
+    productStore.getProducts();
+  }
+});
 </script>
 
 <template>

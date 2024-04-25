@@ -22,7 +22,7 @@
               required />
           </div>
           <div class="w-full">
-            <label for="" class="block">Description</label>
+            <label for="" class="block">Size</label>
             <input
               placeholder=""
               id="description"
@@ -227,7 +227,6 @@ const handleSubmit = async () => {
 
     console.log(data);
 
-    return true;
     productStore
       .addProduct(data)
       .then((res) => {

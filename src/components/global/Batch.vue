@@ -103,6 +103,7 @@ import {
 import { useCartStore } from "@/stores/cart";
 import { useNotification } from "@kyvg/vue3-notification";
 import { onBeforeMount, ref } from "vue";
+import router from "@/router";
 
 const props = defineProps({
   product: Object,
@@ -209,6 +210,8 @@ const addToCart = (product, index) => {
   console.log(data);
 
   cartStore.cart.unshift(data);
+
+  router.push("/cart");
 
   notify({
     type: "success",

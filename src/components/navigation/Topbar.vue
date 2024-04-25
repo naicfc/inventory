@@ -108,11 +108,11 @@ const user = authStore.user;
 const currentDate = new Date();
 
 const expired = computed(() => {
-  return expiredBatches.value.length;
+  return expiredBatches.value?.length;
 });
 
 const expiring = computed(() => {
-  return expiringBatches.value.length;
+  return expiringBatches.value?.length;
 });
 
 const computeExpiry = computed(() => {
@@ -143,16 +143,16 @@ const logout = () => {
 };
 
 const createNotification = () => {
-  if (expiringBatches.value.length > 0) {
+  if (expiringBatches.value?.length > 0) {
     activityStore.notifications.push({
       title: "Expiration",
-      text: `${expiringBatches.value.length} products are expired`,
+      text: `${expiringBatches.value?.length} products are expired`,
     });
   }
-  if (expiringBatches.value.length > 0) {
+  if (expiringBatches.value?.length > 0) {
     activityStore.notifications.push({
       title: "Expiration",
-      text: `${expiredBatches.value.length} products are expiring`,
+      text: `${expiredBatches.value?.length} products are expiring`,
     });
   }
 };
