@@ -185,5 +185,47 @@ export const useProductStore = defineStore("productStore", {
       }
     },
   },
+  getters: {
+    expiredBatches(state) {
+      var expiredBatches = [];
+      for (const product of state.products) {
+        for (const batch of product.batches) {
+          if (new Date(batch.expiryDate) < new Date()) {
+            expiredBatches.push({
+              productId: product._id,
+              productName: product.name,
+              batchNumber: batch.batchNumber,
+              expiryDate: batch.expiryDate,
+              quantity: batch.quantity,
+            });
+          }
+        }
+      }
+      return expiredBatches;
+    },
+    expiringBatches(state) {
+      var expiringBatches = [];
+      for (const product of state.products) {
+        for (const batch of product.batches) {
+          const expiryDate = new Date(batch.expiryDate);
+          const today = new Date();
+          const daysUntilExpiry = Math.floor(
+            (expiryDate - today) / (1000 * 60 * 60 * 24),
+          );
+          if (daysUntilExpiry <= 2 && daysUntilExpiry >= 0) {
+            expiringBatches.push({
+              productId: product._id,
+              productName: product.name,
+              batchNumber: batch.batchNumber,
+              expiryDate: batch.expiryDate,
+              quantity: batch.quantity,
+              daysUntilExpiry: daysUntilExpiry,
+            });
+          }
+        }
+      }
+      return expiringBatches;
+    },
+  },
   persist: true,
 });

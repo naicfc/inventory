@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 const initialState = {
-  activities: null,
+  activities: [],
+  notifications: [],
 };
 const token = localStorage.getItem("token");
 
@@ -34,5 +35,4 @@ export const useActivityStore = defineStore("activityStore", {
       }
     },
   },
-  persist: true,
 });
