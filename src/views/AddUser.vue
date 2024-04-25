@@ -85,6 +85,17 @@ const handleSubmit = () => {
   };
   console.log(data);
 
+  if (authStore.user.role == "salesman") {
+    notify({
+      type: "error",
+      title: "Unauthorized",
+      text: "Only an admin can add another user",
+    });
+
+    loading.value = false;
+    return true;
+  }
+
   authStore
     .registerUser(data)
     .then((res) => {

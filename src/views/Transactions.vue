@@ -47,7 +47,7 @@
           </div>
         </div>
       </div>
-      <div class="col-span-3 gray-border">
+      <div class="col-span-3 gray-border text-xs">
         <div class="flex justify-between items-center mb-6">
           <p class="sub-header">Invoice details</p>
           <div>
